@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Init Terraform') {
+            steps {
+                dir('terraform') {
+                    bat 'terraform init'
+                }
+            }
+        }
+
+        stage('Plan Terraform') {
+            steps {
+                dir('terraform') {
+                    bat 'terraform plan'
+                }
+            }
+        }
+
+        stage('Apply Terraform') {
+            steps {
+                dir('terraform') {
+                    input message: 'Do you want to apply Terraform changes?'
+                    bat 'terraform apply -auto-approve'
+                }
+            }
+        }
+    }
+}
